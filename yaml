@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  node-red-sulaiman:
+    image: nodered/node-red:latest
+    ports:
+      - "1880:1880"
+    networks:
+      - sulaiman_net
+    volumes:
+      - sulaiman_nodered_vol:/data
+
+  influxdb-sulaiman:
+    image: influxdb:latest
+    ports:
+      - "8086:8086"
+    networks:
+      - sulaiman_net
+    volumes:
+      - sulaiman_influx_vol:/var/lib/influxdb2:rw
+
+  grafana-sulaiman:
+    image: grafana/grafana:latest
+    ports:
+      - "3000"
+    networks:
+      - sulaiman_net
+    volumes:
+      - sulaiman_grafana_vol:/var/lib/grafana:rw
+
+  mosquitto-sulaiman:
+    image: eclipse-mosquitto:1.6.13
+    ports:
+      - "1883:1883"
+    networks:
+      - sulaiman_net
+
+networks:
+  sulaiman_net:
+    driver: bridge
+
+volumes:
+  sulaiman_nodered_vol:
+  sulaiman_influx_vol:
+  sulaiman_grafana_vol:
